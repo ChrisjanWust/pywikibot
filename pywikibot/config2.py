@@ -367,17 +367,18 @@ def get_base_dir(test_directory=None):
         raise RuntimeError("Directory '%s' does not exist." % base_dir)
     # check if user-config.py is in base_dir
     if not exists(base_dir):
+        global __no_user_config
         exc_text = "No user-config.py found in directory '%s'.\n" % base_dir
         if __no_user_config:
             if __no_user_config != '2':
                 output(exc_text)
         else:
             exc_text += (
-                '  Please check that user-config.py is stored in the correct '
-                'location.\n'
-                '  Directory where user-config.py is searched is determined '
-                'as follows:\n\n    ') + get_base_dir.__doc__
-            raise RuntimeError(exc_text)
+                            '  No user-config.py file found. Setting __no_user_config = "1"\n'
+                            '  Directory where user-config.py is searched is determined '
+                            'as follows:\n\n    ') + get_base_dir.__doc__
+            __no_user_config = '1'
+            output(exc_text)
 
     return base_dir
 
