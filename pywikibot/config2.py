@@ -1028,25 +1028,38 @@ _public_globals = {
 # we can detect modified config items easily.
 _exec_globals = copy.deepcopy(_public_globals)
 
+
 # Get the user files
 if __no_user_config:
     if __no_user_config != '2':
         warning('Skipping loading of user-config.py.')
 else:
     _filename = os.path.join(base_dir, 'user-config.py')
+
+    def read_user_config():
+        with open(_filename, 'rb') as f:
+            exec(compile(f.read(), _filename, 'exec'), _exec_globals)
+
     if os.path.exists(_filename):
         _filestatus = os.stat(_filename)
         _filemode = _filestatus[0]
         _fileuid = _filestatus[4]
         if OSWIN32 or _fileuid in [os.getuid(), 0]:
             if OSWIN32 or _filemode & 0o02 == 0:
-                with open(_filename, 'rb') as f:
-                    exec(compile(f.read(), _filename, 'exec'), _exec_globals)
+                read_user_config()
             else:
-                warning("Skipped '%(fn)s': writeable by others."
-                        % {'fn': _filename})
+                try:
+                    read_user_config()
+                except Exception as e:
+                    error(f"{e}" +
+                          "Skipped '%(fn)s': writeable by others."
+                          % {'fn': _filename})
         else:
-            warning("Skipped '%(fn)s': owned by someone else."
+            try:
+                read_user_config()
+            except Exception as e:
+                error(f"{e}" +
+                      "Skipped '%(fn)s': owned by someone else."
                     % {'fn': _filename})
 
 
