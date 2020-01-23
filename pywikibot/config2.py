@@ -69,7 +69,7 @@ if OSWIN32:
 
 # Normalize old PYWIKIBOT2 environment variables and issue a deprecation warn.
 for env_name in (
-    'PYWIKIBOT2_DIR', 'PYWIKIBOT2_DIR_PWB', 'PYWIKIBOT2_NO_USER_CONFIG',
+        'PYWIKIBOT2_DIR', 'PYWIKIBOT2_DIR_PWB', 'PYWIKIBOT2_NO_USER_CONFIG',
 ):
     if env_name not in environ:
         continue
@@ -332,7 +332,7 @@ def get_base_dir(test_directory=None):
         elif exists('.'):
             base_dir = os.path.abspath('.')
         elif ('PYWIKIBOT_DIR_PWB' in environ
-                and exists(os.path.abspath(environ['PYWIKIBOT_DIR_PWB']))):
+              and exists(os.path.abspath(environ['PYWIKIBOT_DIR_PWB']))):
             base_dir = os.path.abspath(environ['PYWIKIBOT_DIR_PWB'])
         else:
             base_dir_cand = []
@@ -347,7 +347,7 @@ def get_base_dir(test_directory=None):
                     raise WindowsError('Windows version {} not supported yet.'
                                        .format(win_version))
                 base_dir_cand.extend([[home] + sub_dir + ['Pywikibot'],
-                                     [home] + sub_dir + ['pywikibot']])
+                                      [home] + sub_dir + ['pywikibot']])
             else:
                 base_dir_cand.append([home, '.pywikibot'])
 
@@ -1071,8 +1071,8 @@ class _DifferentTypeError(UserWarning, TypeError):
         super(_DifferentTypeError, self).__init__(
             'Configuration variable "{0}" is defined as "{1.__name__}" in '
             'your user-config.py but expected "{2}".'
-            .format(name, actual_type, '", "'.join(t.__name__
-                                                   for t in allowed_types)))
+                .format(name, actual_type, '", "'.join(t.__name__
+                                                       for t in allowed_types)))
 
 
 def _assert_default_type(name, value, default_value):
@@ -1164,7 +1164,7 @@ if OSWIN32 and editor:
 
 if userinterface_lang is None:
     userinterface_lang = os.getenv('PYWIKIBOT_USERINTERFACE_LANG') \
-        or getdefaultlocale()[0]
+                         or getdefaultlocale()[0]
     if userinterface_lang in [None, 'C']:
         userinterface_lang = 'en'
     else:
